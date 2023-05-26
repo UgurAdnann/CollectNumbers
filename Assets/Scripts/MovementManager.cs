@@ -6,7 +6,7 @@ public class MovementManager : MonoBehaviour
 {
 
     private NumbersController numberController;
-
+    private IEnumerator moveCoroutine;
 
     private void Awake()
     {
@@ -23,10 +23,35 @@ public class MovementManager : MonoBehaviour
         
     }
 
-    public void Movement(int newColumn,int newRow)
+    public void Movement(int newColumn,int newRow,float time)
+    {
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+        }
+
+        moveCoroutine = MoveCoroutine(newColumn, newRow,time);
+        StartCoroutine(moveCoroutine);
+
+        //numberController.Column = newColumn;
+        //numberController.Row = newRow;
+        //numberController.transform.localPosition = numberController.GridRef.GetWorldPosition(newColumn, newRow);
+    }
+
+    private IEnumerator MoveCoroutine(int newColumn, int newRow, float time)
     {
         numberController.Column = newColumn;
         numberController.Row = newRow;
-        numberController.transform.localPosition = numberController.GridRef.GetWorldPosition(newColumn, newRow);
+
+        Vector3 startPos = transform.position;
+        Vector3 endPos = numberController.GridRef.GetWorldPosition(newColumn, newRow);
+
+        for (float t = 0; t <=1*time; t+=Time.deltaTime)
+        {
+            numberController.transform.position = Vector3.Lerp(startPos, endPos, t / time);
+        yield return 0;
+        }
+
+        numberController.transform.position = endPos; //Loopta tam hedefe gitmeyebilir diye yazýldý
     }
 }

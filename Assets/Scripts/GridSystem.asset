@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d56c0898e3917694db64dd937f363e4b, type: 3}
   m_Name: GridSystem
   m_EditorClassIdentifier: 
-  row: 5
-  column: 5
+  row: 7
+  column: 7
   maxNumber: 5
   useableMaxNumber: 4
+  matchNumber: 3
+  fillTime: 0.1
   startPoint: {x: -250, y: 150}
   gridScale: 1
   colors:
@@ -28,4 +30,8 @@ MonoBehaviour:
   gridPrefab: {fileID: 7418028351732258047, guid: 661a4153112f5014e8762970a4b58d10, type: 3}
   numberPrefabs:
   - type: 0
+    prefab: {fileID: 50662583194677260, guid: 76bec471036c8df45850347bf4469c1c, type: 3}
+  - type: 1
     prefab: {fileID: 7445203541849158916, guid: 4e8c15c90f51146469d1ce80c307be8d, type: 3}
+  - type: 2
+    prefab: {fileID: 7896225974002621885, guid: a43d6b4e3277fc945bdbe83f311f9894, type: 3}

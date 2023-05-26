@@ -17,7 +17,8 @@ public class GridSystemSO : ScriptableObject
     };
     #endregion
 
-    public int row, column, maxNumber, useableMaxNumber;
+    public int row, column, maxNumber, useableMaxNumber,matchNumber;
+    public float fillTime;
     public Vector2 startPoint;
     public float gridScale;
     public Color[] colors;
