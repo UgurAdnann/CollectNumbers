@@ -9,9 +9,17 @@ public class NumbersController : MonoBehaviour
     public int numberValue, colorValue;
     TMPro.TextMeshPro numberText;
     public NumberType numberType;
+    private Animator animator;
 
-    
     private int column, row;
+
+    #region Variables for Destroy
+    private bool isBeingCleared = false;
+    public bool IsBeingCleared
+    {
+        get { return isBeingCleared; }
+    }
+    #endregion
 
     public int Column
     {
@@ -46,6 +54,7 @@ public class NumbersController : MonoBehaviour
     }
     void Start()
     {
+        animator = GetComponent<Animator>();
         numberText = transform.GetChild(0).GetComponent<TMPro.TextMeshPro>();
         SetColor();
     }
@@ -94,5 +103,22 @@ public class NumbersController : MonoBehaviour
         type = _type;
     }
 
-    
+    #region Destroy
+    public void DestroyEvent()
+    {
+        isBeingCleared = true;
+        StartCoroutine(WaitDestroyEvent());
+    }
+
+    private IEnumerator WaitDestroyEvent()
+    {
+        //animator.SetTrigger("Destroy");
+        yield return new WaitForSeconds(0.2f);
+        //gridManager.ClearAllValidMatches();
+        //StartCoroutine(gridManager.Fill()); ///////////////////Baþka yerde çaðrýlkabilir videoyu izle
+        gridManager.SpawnNewNumber(Column, Row, NumberType.Empty);
+        Destroy(gameObject);
+    }
+    #endregion
+
 }

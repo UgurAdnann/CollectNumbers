@@ -89,9 +89,15 @@ public class GridManager : MonoBehaviour
 
     public IEnumerator Fill()
     {
-        while (FillStep())
+        bool needsRefill = true;
+        while (needsRefill)
         {
             yield return new WaitForSeconds(gridSystemSO.fillTime);
+            while (FillStep())
+            {
+                yield return new WaitForSeconds(gridSystemSO.fillTime);
+            }
+            //needsRefill = ClearAllValidMatches();
         }
     }
 
@@ -135,6 +141,41 @@ public class GridManager : MonoBehaviour
         }
         return movedPiece;
     }
+
+
+    //public bool ClearAllValidMatches()
+    //{
+    //    bool isNeedsRefill = false;
+    //    for (int j = 0; j < gridSystemSO.row; j++)
+    //    {
+    //        for (int i = 0; i < gridSystemSO.column; i++)
+    //        {
+    //            List<NumbersController> match = GetMatch(gridSystemSO.numbers[i, j], i, j);
+    //            if (match != null)
+    //            {
+    //                for (int l = 0; l < match.Count; l++)
+    //                {
+    //                    if (ClearPiece(match[l].Column, match[l].Row))
+    //                    {
+    //                        isNeedsRefill = true;
+    //                    }
+
+    //                }
+    //            }
+    //        }
+    //    }
+    //    return isNeedsRefill;
+    //}
+    //public bool ClearPiece(int column, int row)
+    //{
+    //    if (!gridSystemSO.numbers[column, row].IsBeingCleared)
+    //    {
+    //        gridSystemSO.numbers[column, row].DestroyEvent();
+    //        SpawnNewNumber(column, row, NumberType.Empty);
+    //        return true;
+    //    }
+    //    return false;
+    //}
 
     #endregion
 
@@ -219,24 +260,18 @@ public class GridManager : MonoBehaviour
         {
             foreach (var item in GetMatch(destroyNumber, destroyColumn, destroyRow))
             {
-                item.transform.SetParent(matchedObjects);
+                item.DestroyEvent();
+                matchedCount++;
             }
-            matchedCount = matchedObjects.childCount;
-            print("Matched Count: " + matchedCount);
-            StartCoroutine(DestroyMatchedNumbers(destroyNumber, destroyColumn, destroyRow));
+            print("Matched Count: " + matchedCount + " Hatali");
+
+            //StartCoroutine(Fill());
+            //ClearAllValidMatches();
         }
 
 
     }
-    IEnumerator DestroyMatchedNumbers(NumbersController destroyNumber, int destroyColumn, int destroyRow)
-    {
-        for (int i = 0; i < matchedCount; i++)
-        {
-            Destroy(matchedObjects.GetChild(0).gameObject);
-            yield return new WaitForSeconds(0.01f);
-        }
-        StartCoroutine(Fill());
-    }
+
     #endregion
 
 
