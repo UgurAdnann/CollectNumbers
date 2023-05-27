@@ -72,6 +72,8 @@ public class NumbersController : MonoBehaviour
             numberValue++;
             SetColor();
             gridManager.DestroyMathed(this, Column, Row);
+            gridManager.ClearAllValidMatches();
+            gridManager.StartFill();
         }
     }
     #endregion
@@ -112,11 +114,11 @@ public class NumbersController : MonoBehaviour
 
     private IEnumerator WaitDestroyEvent()
     {
-        //animator.SetTrigger("Destroy");
-        yield return new WaitForSeconds(0.2f);
-        //gridManager.ClearAllValidMatches();
-        //StartCoroutine(gridManager.Fill()); ///////////////////Baþka yerde çaðrýlkabilir videoyu izle
+        if (animator != null)
+            animator.SetTrigger("Destroy");
         gridManager.SpawnNewNumber(Column, Row, NumberType.Empty);
+        yield return new WaitForSeconds(0.2f);
+
         Destroy(gameObject);
     }
     #endregion

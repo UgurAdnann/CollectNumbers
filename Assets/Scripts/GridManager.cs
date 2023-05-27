@@ -11,6 +11,8 @@ public class GridManager : MonoBehaviour
     #endregion
     private int matchedCount, matchedColor;
 
+    private bool inverse;
+
 
     private void Awake()
     {
@@ -87,7 +89,12 @@ public class GridManager : MonoBehaviour
 
     #region FillGridsWithNumbers
 
-    public IEnumerator Fill()
+    public void StartFill()
+    {
+        StartCoroutine(Fill());
+    }
+
+    private IEnumerator Fill()
     {
         bool needsRefill = true;
         while (needsRefill)
@@ -95,9 +102,10 @@ public class GridManager : MonoBehaviour
             yield return new WaitForSeconds(gridSystemSO.fillTime);
             while (FillStep())
             {
+                inverse = !inverse;
                 yield return new WaitForSeconds(gridSystemSO.fillTime);
             }
-            //needsRefill = ClearAllValidMatches();
+            needsRefill = ClearAllValidMatches();
         }
     }
 
@@ -106,8 +114,13 @@ public class GridManager : MonoBehaviour
         bool movedPiece = false;
         for (int j = gridSystemSO.row - 2; j >= 0; j--)
         {
-            for (int i = 0; i < gridSystemSO.column; i++)
+            for (int loopX = 0; loopX < gridSystemSO.column; loopX++)
             {
+                int i = loopX;
+                if (inverse)
+                {
+                    i = gridSystemSO.column - 1 - loopX;
+                }
                 NumbersController number = gridSystemSO.numbers[i, j];
 
                 NumbersController numberBelow = gridSystemSO.numbers[i, j + 1];
@@ -118,7 +131,6 @@ public class GridManager : MonoBehaviour
                     gridSystemSO.numbers[i, j + 1] = number;
                     SpawnNewNumber(i, j, NumberType.Empty);
                     movedPiece = true;
-
                 }
             }
         }
@@ -129,7 +141,7 @@ public class GridManager : MonoBehaviour
             if (numberBelow.Type == NumberType.Empty)
             {
                 Destroy(numberBelow.gameObject);
-                GameObject newNumber = Instantiate(gridSystemSO.numberPrefabDict[NumberType.Normal], GetWorldPosition(i, -1), Quaternion.identity);
+                GameObject newNumber = (GameObject)Instantiate(gridSystemSO.numberPrefabDict[NumberType.Normal], GetWorldPosition(i, -1), Quaternion.identity);
                 newNumber.transform.SetParent(transform);
 
                 gridSystemSO.numbers[i, 0] = newNumber.GetComponent<NumbersController>();
@@ -143,39 +155,41 @@ public class GridManager : MonoBehaviour
     }
 
 
-    //public bool ClearAllValidMatches()
-    //{
-    //    bool isNeedsRefill = false;
-    //    for (int j = 0; j < gridSystemSO.row; j++)
-    //    {
-    //        for (int i = 0; i < gridSystemSO.column; i++)
-    //        {
-    //            List<NumbersController> match = GetMatch(gridSystemSO.numbers[i, j], i, j);
-    //            if (match != null)
-    //            {
-    //                for (int l = 0; l < match.Count; l++)
-    //                {
-    //                    if (ClearPiece(match[l].Column, match[l].Row))
-    //                    {
-    //                        isNeedsRefill = true;
-    //                    }
+    public bool ClearAllValidMatches()
+    {
+        bool isNeedsRefill = false;
+        for (int j = 0; j < gridSystemSO.row; j++)
+        {
+            for (int i = 0; i < gridSystemSO.column; i++)
+            {
+                if (gridSystemSO.numbers[i, j] == null)
+                    print("null");
+                List<NumbersController> match = GetMatch(gridSystemSO.numbers[i, j], i, j);
+                if (match != null)
+                {
+                    for (int l = 0; l < match.Count; l++)
+                    {
+                        if (ClearPiece(match[l].Column, match[l].Row))
+                        {
+                            isNeedsRefill = true;
+                        }
 
-    //                }
-    //            }
-    //        }
-    //    }
-    //    return isNeedsRefill;
-    //}
-    //public bool ClearPiece(int column, int row)
-    //{
-    //    if (!gridSystemSO.numbers[column, row].IsBeingCleared)
-    //    {
-    //        gridSystemSO.numbers[column, row].DestroyEvent();
-    //        SpawnNewNumber(column, row, NumberType.Empty);
-    //        return true;
-    //    }
-    //    return false;
-    //}
+                    }
+                }
+            }
+        }
+        return isNeedsRefill;
+    }
+    public bool ClearPiece(int column, int row)
+    {
+        if (!gridSystemSO.numbers[column, row].IsBeingCleared)
+        {
+            gridSystemSO.numbers[column, row].DestroyEvent();
+            SpawnNewNumber(column, row, NumberType.Empty);
+            return true;
+        }
+        return false;
+    }
 
     #endregion
 
@@ -268,10 +282,7 @@ public class GridManager : MonoBehaviour
             //StartCoroutine(Fill());
             //ClearAllValidMatches();
         }
-
-
     }
-
     #endregion
 
 
