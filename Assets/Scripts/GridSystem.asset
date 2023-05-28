@@ -27,6 +27,7 @@ MonoBehaviour:
   - {r: 0.00083065033, g: 0, b: 1, a: 1}
   - {r: 1, g: 0.4443817, b: 0, a: 1}
   - {r: 1, g: 0, b: 0.75262356, a: 1}
+  isSmootCreateStart: 0
   gridPrefab: {fileID: 7418028351732258047, guid: 661a4153112f5014e8762970a4b58d10, type: 3}
   numberPrefabs:
   - type: 0

@@ -5,14 +5,12 @@ using UnityEngine;
 public class GridManager : MonoBehaviour
 {
     public Transform matchedObjects;
+    public bool isGameStart;
     #region Create Grid
     private CanvasManager canvasManager; //------------
     public GridSystemSO gridSystemSO;//-------------
     #endregion
     private int matchedCount, matchedColor;
-
-    private bool inverse;
-
 
     private void Awake()
     {
@@ -37,6 +35,7 @@ public class GridManager : MonoBehaviour
             }
         }
         //Create Grids
+        gridSystemSO.grids = new GameObject[gridSystemSO.column, gridSystemSO.row];
         for (int i = 0; i < gridSystemSO.column; i++)
         {
             for (int j = 0; j < gridSystemSO.row; j++)
@@ -44,6 +43,7 @@ public class GridManager : MonoBehaviour
                 GameObject grid = Instantiate(gridSystemSO.gridPrefab, GetWorldPosition(i, j), Quaternion.identity);
                 grid.transform.SetParent(transform);
                 grid.transform.localScale = Vector3.one * gridSystemSO.gridScale;
+                gridSystemSO.grids[i, j] = grid;
             }
         }
 
@@ -54,13 +54,20 @@ public class GridManager : MonoBehaviour
         {
             for (int j = 0; j < gridSystemSO.row; j++)
             {
-                SpawnNewNumber(i, j, NumberType.Empty);
-                //GameObject newNumber = Instantiate(gridSystemSO.numberPrefabDict[NumberType.Normal], Vector3.zero, Quaternion.identity);
-                //newNumber.name = "Number(" + i + "," + j + ")";
-                //newNumber.transform.SetParent(transform);
-                //newNumber.transform.localScale = Vector3.one * gridSystemSO.gridScale;
-                //gridSystemSO.numbers[i, j] = newNumber.GetComponent<NumbersController>();
-                //gridSystemSO.numbers[i, j].Init(i, j, this, NumberType.Normal);
+                if (gridSystemSO.isSmootCreateStart)
+                    SpawnNewNumber(i, j, NumberType.Empty);
+                else
+                {
+                    GameObject newNumber = Instantiate(gridSystemSO.numberPrefabDict[NumberType.Normal], Vector3.zero, Quaternion.identity);
+                    newNumber.name = "Number(" + i + "," + j + ")";
+                    newNumber.transform.SetParent(transform);
+                    newNumber.transform.localScale = Vector3.one * gridSystemSO.gridScale;
+                    CloseNumbers(newNumber);
+                    gridSystemSO.numbers[i, j] = newNumber.GetComponent<NumbersController>();
+                    gridSystemSO.numbers[i, j].transform.position = gridSystemSO.grids[i, j].transform.position;
+                    gridSystemSO.numbers[i, j].Init(i, j, this, NumberType.Normal);
+                }
+
 
                 //gridSystemSO.numbers[i, j].GetComponent<MovementManager>().Movement(i, j);
             }
@@ -85,6 +92,18 @@ public class GridManager : MonoBehaviour
 
         return gridSystemSO.numbers[column, row];
     }
+
+    private void CloseNumbers(GameObject number)
+    {
+        number.GetComponent<SpriteRenderer>().enabled = false;
+        number.transform.GetChild(0).gameObject.SetActive(false);
+    }
+
+    private void OpenNumbers(GameObject number)
+    {
+        number.GetComponent<SpriteRenderer>().enabled = true;
+        number.transform.GetChild(0).gameObject.SetActive(true);
+    }
     #endregion
 
     #region FillGridsWithNumbers
@@ -99,13 +118,31 @@ public class GridManager : MonoBehaviour
         bool needsRefill = true;
         while (needsRefill)
         {
-            yield return new WaitForSeconds(gridSystemSO.fillTime);
+            float time = isGameStart ? gridSystemSO.fillTime : 0;
+            yield return new WaitForSeconds(time);
             while (FillStep())
             {
-                inverse = !inverse;
-                yield return new WaitForSeconds(gridSystemSO.fillTime);
+                yield return new WaitForSeconds(time);
             }
             needsRefill = ClearAllValidMatches();
+        }
+
+        //EndFill Events
+        if (!needsRefill && !isGameStart)
+        {
+            isGameStart = true;
+            //OpenNumbers
+            if (!gridSystemSO.isSmootCreateStart)
+            {
+                for (int i = 0; i <= gridSystemSO.numbers.GetUpperBound(0); i++)
+                {
+                    for (int j = 0; j <= gridSystemSO.numbers.GetUpperBound(1); j++)
+                    {
+                        OpenNumbers(gridSystemSO.numbers[i, j].gameObject);
+                    }
+                }
+            }
+
         }
     }
 
@@ -114,13 +151,9 @@ public class GridManager : MonoBehaviour
         bool movedPiece = false;
         for (int j = gridSystemSO.row - 2; j >= 0; j--)
         {
-            for (int loopX = 0; loopX < gridSystemSO.column; loopX++)
+            for (int i = 0; i < gridSystemSO.column; i++)
             {
-                int i = loopX;
-                if (inverse)
-                {
-                    i = gridSystemSO.column - 1 - loopX;
-                }
+
                 NumbersController number = gridSystemSO.numbers[i, j];
 
                 NumbersController numberBelow = gridSystemSO.numbers[i, j + 1];
@@ -143,6 +176,10 @@ public class GridManager : MonoBehaviour
                 Destroy(numberBelow.gameObject);
                 GameObject newNumber = (GameObject)Instantiate(gridSystemSO.numberPrefabDict[NumberType.Normal], GetWorldPosition(i, -1), Quaternion.identity);
                 newNumber.transform.SetParent(transform);
+
+                //CloseStartNumbers if instantly refill
+                if (!gridSystemSO.isSmootCreateStart&&!isGameStart)
+                    CloseNumbers(newNumber);
 
                 gridSystemSO.numbers[i, 0] = newNumber.GetComponent<NumbersController>();
                 gridSystemSO.numbers[i, 0].Init(i, -1, this, NumberType.Normal);

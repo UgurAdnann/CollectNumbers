@@ -22,10 +22,12 @@ public class GridSystemSO : ScriptableObject
     public Vector2 startPoint;
     public float gridScale;
     public Color[] colors;
+    public bool isSmootCreateStart;
 
     public GameObject gridPrefab;
     public Dictionary<NumberType, GameObject> numberPrefabDict;
     public NumberPrefab[] numberPrefabs;
     public NumbersController[,] numbers;
+    public GameObject[,] grids;
 
 }

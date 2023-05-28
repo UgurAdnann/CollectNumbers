@@ -116,9 +116,9 @@ public class NumbersController : MonoBehaviour
     {
         if (animator != null)
             animator.SetTrigger("Destroy");
-        gridManager.SpawnNewNumber(Column, Row, NumberType.Empty);
+      NumbersController newNumber=  gridManager.SpawnNewNumber(Column, Row, NumberType.Empty);
         yield return new WaitForSeconds(0.2f);
-
+        Destroy(newNumber.gameObject);
         Destroy(gameObject);
     }
     #endregion
