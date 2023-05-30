@@ -82,7 +82,7 @@ public class NumbersController : MonoBehaviour
     {
         if (Type.Equals(NumberType.Normal))
         {
-            if (numberValue == 0||numberValue>gridSystemSO.maxNumber)
+            if (numberValue == 0 || numberValue > gridSystemSO.maxNumber)
             {
                 colorValue = Random.Range(1, gridSystemSO.useableMaxNumber + 1);
                 numberValue = colorValue;
@@ -114,9 +114,10 @@ public class NumbersController : MonoBehaviour
 
     private IEnumerator WaitDestroyEvent()
     {
+
         if (animator != null)
             animator.SetTrigger("Destroy");
-      NumbersController newNumber=  gridManager.SpawnNewNumber(Column, Row, NumberType.Empty);
+        NumbersController newNumber = gridManager.SpawnNewNumber(Column, Row, NumberType.Empty);
         yield return new WaitForSeconds(0.2f);
         Destroy(newNumber.gameObject);
         Destroy(gameObject);

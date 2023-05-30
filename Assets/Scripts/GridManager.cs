@@ -10,7 +10,8 @@ public class GridManager : MonoBehaviour
     private CanvasManager canvasManager; //------------
     public GridSystemSO gridSystemSO;//-------------
     #endregion
-    private int matchedCount, matchedColor;
+    public int matchedCount, matchedColor;
+    public List<GameObject> destroyedList = new List<GameObject>();
 
     private void Awake()
     {
@@ -118,34 +119,45 @@ public class GridManager : MonoBehaviour
         bool needsRefill = true;
         while (needsRefill)
         {
+            
             float time = isGameStart ? gridSystemSO.fillTime : 0;
             yield return new WaitForSeconds(time);
             while (FillStep())
             {
                 yield return new WaitForSeconds(time);
             }
+            if (!isGameStart)
+                SetEntryNumbers();
             needsRefill = ClearAllValidMatches();
-            SetEntryNumbers();
         }
 
         //EndFill Events
-        if (!needsRefill && !isGameStart)
+        if (!needsRefill)
         {
-            isGameStart = true;
-            //OpenNumbers
-            if (!gridSystemSO.isSmootCreateStart)
+            //Check Destroyed Numbers
+            if (isGameStart)
             {
-                for (int i = 0; i <= gridSystemSO.numbers.GetUpperBound(0); i++)
-                {
-                    for (int j = 0; j <= gridSystemSO.numbers.GetUpperBound(1); j++)
-                    {
-                        OpenNumbers(gridSystemSO.numbers[i, j].gameObject);
-                    }
-                }
+            print(destroyedList.Count);
+            print("Renklere göre ayrýmý yapýlcak");
+            destroyedList.Clear();
             }
 
-            
-
+            if (!isGameStart)
+            {
+                isGameStart = true;
+                //OpenNumbers
+                if (!gridSystemSO.isSmootCreateStart)
+                {
+                    for (int i = 0; i <= gridSystemSO.numbers.GetUpperBound(0); i++)
+                    {
+                        for (int j = 0; j <= gridSystemSO.numbers.GetUpperBound(1); j++)
+                        {
+                            OpenNumbers(gridSystemSO.numbers[i, j].gameObject);
+                        }
+                    }
+                }
+                destroyedList.Clear();
+            }
 
         }
     }
@@ -225,6 +237,10 @@ public class GridManager : MonoBehaviour
     {
         if (!gridSystemSO.numbers[column, row].IsBeingCleared)
         {
+
+            if (!destroyedList.Contains(gridSystemSO.numbers[column, row].gameObject) && gridSystemSO.numbers[column, row].Type.Equals(NumberType.Normal))
+                destroyedList.Add(gridSystemSO.numbers[column, row].gameObject);
+
             gridSystemSO.numbers[column, row].DestroyEvent();
             SpawnNewNumber(column, row, NumberType.Empty);
             return true;
@@ -338,11 +354,10 @@ public class GridManager : MonoBehaviour
         {
             foreach (var item in GetMatch(destroyNumber, destroyColumn, destroyRow))
             {
+                if (!destroyedList.Contains(gridSystemSO.numbers[item.Column, item.Row].gameObject) && gridSystemSO.numbers[item.Column, item.Row].Type.Equals(NumberType.Normal))
+                    destroyedList.Add(gridSystemSO.numbers[item.Column, item.Row].gameObject);
                 item.DestroyEvent();
-                matchedCount++;
             }
-            print("Matched Count: " + matchedCount + " Hatali");
-
             //StartCoroutine(Fill());
             //ClearAllValidMatches();
         }
