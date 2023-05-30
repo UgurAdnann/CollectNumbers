@@ -6,14 +6,29 @@ using UnityEngine;
 
 public class GridSystemSO : ScriptableObject
 {
-    
+    public enum ColorType
+    {
+        Red,
+        Green,
+        Blue,
+        Orange,
+        Pink,
+    };
 
     #region Struct
-    [System.Serializable]
+    [System.Serializable] 
     public struct NumberPrefab
     {
         public NumberType type;
         public GameObject prefab;
+    };
+
+    [System.Serializable]
+    public struct EntryNumber
+    {
+        [Header("0 and above max number=rnd value")]
+        public int value;
+        public int row,column;
     };
     #endregion
 
@@ -29,5 +44,6 @@ public class GridSystemSO : ScriptableObject
     public NumberPrefab[] numberPrefabs;
     public NumbersController[,] numbers;
     public GameObject[,] grids;
+    public EntryNumber[] entryNumbers;
 
 }

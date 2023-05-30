@@ -10,7 +10,7 @@ public class NumbersController : MonoBehaviour
     TMPro.TextMeshPro numberText;
     public NumberType numberType;
     private Animator animator;
-
+    public bool isEntryNumber;
     private int column, row;
 
     #region Variables for Destroy
@@ -82,7 +82,7 @@ public class NumbersController : MonoBehaviour
     {
         if (Type.Equals(NumberType.Normal))
         {
-            if (numberValue == 0)
+            if (numberValue == 0||numberValue>gridSystemSO.maxNumber)
             {
                 colorValue = Random.Range(1, gridSystemSO.useableMaxNumber + 1);
                 numberValue = colorValue;

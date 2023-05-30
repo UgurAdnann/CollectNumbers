@@ -125,6 +125,7 @@ public class GridManager : MonoBehaviour
                 yield return new WaitForSeconds(time);
             }
             needsRefill = ClearAllValidMatches();
+            SetEntryNumbers();
         }
 
         //EndFill Events
@@ -142,6 +143,9 @@ public class GridManager : MonoBehaviour
                     }
                 }
             }
+
+            
+
 
         }
     }
@@ -178,7 +182,7 @@ public class GridManager : MonoBehaviour
                 newNumber.transform.SetParent(transform);
 
                 //CloseStartNumbers if instantly refill
-                if (!gridSystemSO.isSmootCreateStart&&!isGameStart)
+                if (!gridSystemSO.isSmootCreateStart && !isGameStart)
                     CloseNumbers(newNumber);
 
                 gridSystemSO.numbers[i, 0] = newNumber.GetComponent<NumbersController>();
@@ -226,6 +230,29 @@ public class GridManager : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void SetEntryNumbers()
+    {
+        if (gridSystemSO.entryNumbers.Length > 0)
+        {
+
+            for (int i = 0; i < gridSystemSO.entryNumbers.Length; i++)
+            {
+                Destroy(gridSystemSO.numbers[gridSystemSO.entryNumbers[i].row, gridSystemSO.entryNumbers[i].column].gameObject);
+
+                GameObject newNumber = Instantiate(gridSystemSO.numberPrefabDict[NumberType.Normal], Vector3.zero, Quaternion.identity);
+                newNumber.GetComponent<NumbersController>().isEntryNumber = true;
+                newNumber.GetComponent<NumbersController>().numberValue = gridSystemSO.entryNumbers[i].value;
+                newNumber.name = "Number(" + gridSystemSO.entryNumbers[i].row + "," + gridSystemSO.entryNumbers[i].column + ")";
+                newNumber.transform.SetParent(transform);
+                newNumber.transform.localScale = Vector3.one * gridSystemSO.gridScale;
+
+                gridSystemSO.numbers[gridSystemSO.entryNumbers[i].row, gridSystemSO.entryNumbers[i].column] = newNumber.GetComponent<NumbersController>();
+                gridSystemSO.numbers[gridSystemSO.entryNumbers[i].row, gridSystemSO.entryNumbers[i].column].transform.position = gridSystemSO.grids[gridSystemSO.entryNumbers[i].row, gridSystemSO.entryNumbers[i].column].transform.position;
+                gridSystemSO.numbers[gridSystemSO.entryNumbers[i].row, gridSystemSO.entryNumbers[i].column].Init(gridSystemSO.entryNumbers[i].row, gridSystemSO.entryNumbers[i].column, this, NumberType.Normal);
+            }
+        }
     }
 
     #endregion
