@@ -6,15 +6,6 @@ using UnityEngine;
 
 public class GridSystemSO : ScriptableObject
 {
-    public enum ColorType
-    {
-        Red,
-        Green,
-        Blue,
-        Orange,
-        Pink,
-    };
-
     #region Struct
     [System.Serializable] 
     public struct NumberPrefab
@@ -30,11 +21,17 @@ public class GridSystemSO : ScriptableObject
         public int value;
         public int row,column;
     };
+
+    [System.Serializable]
+    public struct GoalType
+    {
+        public ColorType color;
+        public int value;
+    };
     #endregion
 
     public int row, column, maxNumber, useableMaxNumber,matchNumber;
     public float fillTime;
-    public Vector2 startPoint;
     public float gridScale;
     public Color[] colors;
     public bool isSmootCreateStart;
@@ -45,5 +42,6 @@ public class GridSystemSO : ScriptableObject
     public NumbersController[,] numbers;
     public GameObject[,] grids;
     public EntryNumber[] entryNumbers;
+    public GoalType[] goals;
 
 }

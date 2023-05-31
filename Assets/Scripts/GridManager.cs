@@ -90,7 +90,8 @@ public class GridManager : MonoBehaviour
         gridSystemSO.numbers[column, row] = newNumber.GetComponent<NumbersController>();
         gridSystemSO.numbers[column, row].Init(column, row, this, type);
         gridSystemSO.numbers[column, row].numberType = type;
-
+        if (!gridSystemSO.isSmootCreateStart && !isGameStart)
+            CloseNumbers(newNumber);
         return gridSystemSO.numbers[column, row];
     }
 
@@ -102,8 +103,9 @@ public class GridManager : MonoBehaviour
 
     private void OpenNumbers(GameObject number)
     {
-        number.GetComponent<SpriteRenderer>().enabled = true;
-        number.transform.GetChild(0).gameObject.SetActive(true);
+        number.GetComponent<NumbersController>().OpenNumber();
+        //number.GetComponent<SpriteRenderer>().enabled = true;
+        //number.transform.GetChild(0).gameObject.SetActive(true);
     }
     #endregion
 
@@ -119,7 +121,7 @@ public class GridManager : MonoBehaviour
         bool needsRefill = true;
         while (needsRefill)
         {
-            
+
             float time = isGameStart ? gridSystemSO.fillTime : 0;
             yield return new WaitForSeconds(time);
             while (FillStep())
@@ -137,14 +139,15 @@ public class GridManager : MonoBehaviour
             //Check Destroyed Numbers
             if (isGameStart)
             {
-            print(destroyedList.Count);
-            print("Renklere göre ayrýmý yapýlcak");
-            destroyedList.Clear();
+                print(destroyedList.Count);
+                print("Renklere göre ayrýmý yapýlcak");
+                destroyedList.Clear();
             }
 
             if (!isGameStart)
             {
                 isGameStart = true;
+                destroyedList.Clear();
                 //OpenNumbers
                 if (!gridSystemSO.isSmootCreateStart)
                 {
@@ -156,9 +159,7 @@ public class GridManager : MonoBehaviour
                         }
                     }
                 }
-                destroyedList.Clear();
             }
-
         }
     }
 
@@ -263,7 +264,8 @@ public class GridManager : MonoBehaviour
                 newNumber.name = "Number(" + gridSystemSO.entryNumbers[i].row + "," + gridSystemSO.entryNumbers[i].column + ")";
                 newNumber.transform.SetParent(transform);
                 newNumber.transform.localScale = Vector3.one * gridSystemSO.gridScale;
-
+                if (!gridSystemSO.isSmootCreateStart && !isGameStart)
+                    CloseNumbers(newNumber);
                 gridSystemSO.numbers[gridSystemSO.entryNumbers[i].row, gridSystemSO.entryNumbers[i].column] = newNumber.GetComponent<NumbersController>();
                 gridSystemSO.numbers[gridSystemSO.entryNumbers[i].row, gridSystemSO.entryNumbers[i].column].transform.position = gridSystemSO.grids[gridSystemSO.entryNumbers[i].row, gridSystemSO.entryNumbers[i].column].transform.position;
                 gridSystemSO.numbers[gridSystemSO.entryNumbers[i].row, gridSystemSO.entryNumbers[i].column].Init(gridSystemSO.entryNumbers[i].row, gridSystemSO.entryNumbers[i].column, this, NumberType.Normal);

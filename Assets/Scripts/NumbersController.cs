@@ -5,13 +5,16 @@ using UnityEngine;
 public class NumbersController : MonoBehaviour
 {
     public GridSystemSO gridSystemSO;
+    private CanvasManager canvasManager;
     public MovementManager movementManager;
     public int numberValue, colorValue;
+    private string colorName;
     TMPro.TextMeshPro numberText;
     public NumberType numberType;
     private Animator animator;
     public bool isEntryNumber;
     private int column, row;
+    private GameObject target;
 
     #region Variables for Destroy
     private bool isBeingCleared = false;
@@ -54,6 +57,7 @@ public class NumbersController : MonoBehaviour
     }
     void Start()
     {
+        canvasManager = ObjectManager.CanvasManager;
         animator = GetComponent<Animator>();
         numberText = transform.GetChild(0).GetComponent<TMPro.TextMeshPro>();
         SetColor();
@@ -93,6 +97,17 @@ public class NumbersController : MonoBehaviour
             }
             GetComponent<SpriteRenderer>().color = gridSystemSO.colors[colorValue];
             numberText.text = numberValue.ToString();
+
+            if (colorValue == 1)
+                colorName = "Red";
+            if (colorValue == 2)
+                colorName = "Green";
+            if (colorValue == 3)
+                colorName = "Blue";
+            if (colorValue == 4)
+                colorName = "Orange";
+            if (colorValue == 5)
+                colorName = "Pink";
         }
 
     }
@@ -118,10 +133,37 @@ public class NumbersController : MonoBehaviour
         if (animator != null)
             animator.SetTrigger("Destroy");
         NumbersController newNumber = gridManager.SpawnNewNumber(Column, Row, NumberType.Empty);
+        if (gridManager.isGameStart)
+            SetTargetNumber();
         yield return new WaitForSeconds(0.2f);
         Destroy(newNumber.gameObject);
         Destroy(gameObject);
     }
     #endregion
+
+    public void OpenNumber()
+    {
+        StartCoroutine(WaitOpenNumber());
+    }
+
+    IEnumerator WaitOpenNumber()
+    {
+        yield return new WaitForSeconds(0.1f);
+        GetComponent<SpriteRenderer>().enabled = true;
+        transform.GetChild(0).gameObject.SetActive(true);
+    }
+
+    private void SetTargetNumber()
+    {
+        if (Type.Equals(NumberType.Normal))
+        {
+            target = GameObject.FindGameObjectWithTag(colorName);
+            if (target != null)
+            {
+                target.GetComponent<GoalController>().SetText(1);
+
+            }
+        }
+    }
 
 }

@@ -18,7 +18,6 @@ MonoBehaviour:
   useableMaxNumber: 4
   matchNumber: 3
   fillTime: 0.1
-  startPoint: {x: -250, y: 150}
   gridScale: 1
   colors:
   - {r: 0, g: 0, b: 0, a: 0}
@@ -36,3 +35,36 @@ MonoBehaviour:
     prefab: {fileID: 7445203541849158916, guid: 4e8c15c90f51146469d1ce80c307be8d, type: 3}
   - type: 2
     prefab: {fileID: 7896225974002621885, guid: a43d6b4e3277fc945bdbe83f311f9894, type: 3}
+  entryNumbers:
+  - value: 1
+    row: 0
+    column: 0
+  - value: 2
+    row: 1
+    column: 0
+  - value: 3
+    row: 2
+    column: 0
+  - value: 4
+    row: 3
+    column: 0
+  - value: 5
+    row: 4
+    column: 0
+  - value: 6
+    row: 5
+    column: 0
+  - value: 0
+    row: 5
+    column: 0
+  goals:
+  - color: 0
+    value: 5
+  - color: 1
+    value: 7
+  - color: 2
+    value: 11
+  - color: 3
+    value: 14
+  - color: 4
+    value: 7

@@ -28,9 +28,16 @@ public class MovementManager : MonoBehaviour
         {
             StopCoroutine(moveCoroutine);
         }
+            moveCoroutine = MoveCoroutine(newColumn, newRow, time);
+            StartCoroutine(moveCoroutine);
 
-        moveCoroutine = MoveCoroutine(newColumn, newRow, time);
-        StartCoroutine(moveCoroutine);
+            numberController.Column = newColumn;
+            numberController.Row = newRow;
+
+            Vector3 startPos = transform.position;
+            Vector3 endPos = numberController.GridRef.GetWorldPosition(newColumn, newRow);
+
+            numberController.transform.position = endPos; 
 
         //numberController.Column = newColumn;
         //numberController.Row = newRow;
