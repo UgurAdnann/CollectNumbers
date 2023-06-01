@@ -12,6 +12,8 @@ public class GridManager : MonoBehaviour
     #endregion
     public int matchedCount, matchedColor;
     public List<GameObject> destroyedList = new List<GameObject>();
+    public Queue<GameObject> trailQue = new Queue<GameObject>();
+    private GameObject trails;
 
     private void Awake()
     {
@@ -21,6 +23,7 @@ public class GridManager : MonoBehaviour
     void Start()
     {
         CreateGrid();
+        CreateQueue();
     }
 
     #region Create Grid
@@ -139,8 +142,6 @@ public class GridManager : MonoBehaviour
             //Check Destroyed Numbers
             if (isGameStart)
             {
-                print(destroyedList.Count);
-                print("Renklere göre ayrýmý yapýlcak");
                 destroyedList.Clear();
             }
 
@@ -366,5 +367,18 @@ public class GridManager : MonoBehaviour
     }
     #endregion
 
+    #region Trail
+    public void CreateQueue()
+    {
+        trails = GameObject.FindGameObjectWithTag("Trails");
+        for (int i = 0; i < gridSystemSO.trailCount; i++)
+        {
+            GameObject trailTemp = Instantiate(gridSystemSO.trailPrefab);
+            trailTemp.transform.SetParent(trails.transform);
+            trailTemp.transform.localPosition = Vector3.zero;
+            trailQue.Enqueue(trailTemp);
+        }
+    }
+    #endregion
 
 }

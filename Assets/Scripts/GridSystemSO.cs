@@ -7,7 +7,7 @@ using UnityEngine;
 public class GridSystemSO : ScriptableObject
 {
     #region Struct
-    [System.Serializable] 
+    [System.Serializable]
     public struct NumberPrefab
     {
         public NumberType type;
@@ -19,7 +19,7 @@ public class GridSystemSO : ScriptableObject
     {
         [Header("0 and above max number=rnd value")]
         public int value;
-        public int row,column;
+        public int row, column;
     };
 
     [System.Serializable]
@@ -30,13 +30,14 @@ public class GridSystemSO : ScriptableObject
     };
     #endregion
 
-    public int row, column, maxNumber, useableMaxNumber,matchNumber;
+    public int row, column, maxNumber, useableMaxNumber, matchNumber;
     public float fillTime;
     public float gridScale;
     public Color[] colors;
     public bool isSmootCreateStart;
+    public int trailCount;
 
-    public GameObject gridPrefab;
+    public GameObject gridPrefab, trailPrefab;
     public Dictionary<NumberType, GameObject> numberPrefabDict;
     public NumberPrefab[] numberPrefabs;
     public NumbersController[,] numbers;
