@@ -39,8 +39,13 @@ public class GoalController : MonoBehaviour
     public void SetText(int minus)
     {
         value -= minus;
-        if (value < 0)
+        if(value<=0)
+        {
             value = 0;
+            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(1).gameObject.SetActive(true);
+        }
         valueText.text = value.ToString();
+           
     }
 }
