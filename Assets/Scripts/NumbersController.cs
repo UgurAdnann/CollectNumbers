@@ -67,12 +67,13 @@ public class NumbersController : MonoBehaviour
     #region Input System
     private void OnMouseDown()
     {
+        if(!canvasManager.isGameOver)
         print("Anim");
     }
 
     private void OnMouseUp()
     {
-        if (numberValue != gridSystemSO.maxNumber)
+        if (numberValue != gridSystemSO.maxNumber&&!isDestroyed&&!canvasManager.isGameOver)
         {
             numberValue++;
             SetColor();
@@ -148,7 +149,6 @@ public class NumbersController : MonoBehaviour
 
     private void MoveTrail(GameObject newtarget)
     {
-        print("Trail");
         if (gridManager.trailQue.Count <= 0)
             gridManager.CreateQueue();
         GameObject newTrail = gridManager.trailQue.Dequeue();
@@ -172,7 +172,7 @@ public class NumbersController : MonoBehaviour
 
     private void SetTargetNumber()
     {
-        if (Type.Equals(NumberType.Normal))
+        if (Type.Equals(NumberType.Normal)&&colorName!=null)
         {
             target = GameObject.FindGameObjectWithTag(colorName);
             if (target != null)

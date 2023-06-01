@@ -47,17 +47,8 @@ MonoBehaviour:
   - value: 3
     row: 2
     column: 0
-  - value: 4
-    row: 3
-    column: 0
-  - value: 5
-    row: 4
-    column: 0
   - value: 6
-    row: 5
-    column: 0
-  - value: 0
-    row: 5
+    row: 3
     column: 0
   goals:
   - color: 0

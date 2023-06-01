@@ -11,6 +11,7 @@ TagManager:
   - Pink
   - Missile
   - Trails
+  - WinPanel
   layers:
   - Default
   - TransparentFX

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class CanvasManager : MonoBehaviour
 {
@@ -9,6 +11,9 @@ public class CanvasManager : MonoBehaviour
     public GameObject goalPrefab;
     public Transform goals;
     private Image goalsBg;
+    [HideInInspector] public bool isWin, isGameOver;
+    public GameObject winPanel;
+    public GameObject[] confetties;
 
 
     private void Awake()
@@ -19,6 +24,7 @@ public class CanvasManager : MonoBehaviour
     {
         goalsBg = goals.GetChild(0).GetComponent<Image>();
         SetGoals();
+        winPanel = GameObject.FindGameObjectWithTag("WinPanel");
     }
 
     #region Goals Setting
@@ -40,7 +46,7 @@ public class CanvasManager : MonoBehaviour
                 if (i == 0)
                 {
                     count++;
-                    posX = count*distance * 0.5f;
+                    posX = count * distance * 0.5f;
                     print(posX);
                     newGoal.transform.localPosition = new Vector3(posX, 20, 0);
                 }
@@ -51,7 +57,7 @@ public class CanvasManager : MonoBehaviour
                 else if (i % 2 == 0)
                 {
                     count++;
-                    posX = (count * distance)- (distance * 0.5f);
+                    posX = (count * distance) - (distance * 0.5f);
                     newGoal.transform.localPosition = new Vector3(posX, 20, 0);
                 }
                 else
@@ -77,6 +83,35 @@ public class CanvasManager : MonoBehaviour
 
 
         }
+    }
+    #endregion
+
+    #region Win&Fail Statement
+    public void WinState()
+    {
+        StartCoroutine(WaitForWinState());
+    }
+
+    IEnumerator WaitForWinState()
+    {
+        isWin = true;
+        isGameOver = true;
+        print("Confetti");
+        for (int i = 0; i < confetties.Length; i++)
+        {
+            confetties[i].SetActive(true);
+            yield return new WaitForSeconds(0.2f);
+        }
+        yield return new WaitForSeconds(2);
+        winPanel.SetActive(true);
+        winPanel.transform.DOScale(Vector3.one, 1);
+    }
+
+    public void ReloadScene()
+    {
+        DOTween.CompleteAll();
+        StopAllCoroutines();
+        SceneManager.LoadScene(0);
     }
     #endregion
 }

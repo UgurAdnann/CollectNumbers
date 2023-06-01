@@ -23,7 +23,6 @@ public class TrailController : MonoBehaviour
     public void Movement(GameObject target)
     {
         transform.DOMove(Camera.main.ScreenToWorldPoint(target.transform.position), 15).SetEase(Ease.Linear).SetSpeedBased(true).OnStepComplete(() => EndMovement(target));
-
     }
 
     private void EndMovement(GameObject target)

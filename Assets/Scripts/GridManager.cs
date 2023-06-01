@@ -14,6 +14,7 @@ public class GridManager : MonoBehaviour
     public List<GameObject> destroyedList = new List<GameObject>();
     public Queue<GameObject> trailQue = new Queue<GameObject>();
     private GameObject trails;
+    [HideInInspector] public int doneGoals;
 
     private void Awake()
     {
@@ -22,6 +23,7 @@ public class GridManager : MonoBehaviour
 
     void Start()
     {
+        canvasManager = ObjectManager.CanvasManager;
         CreateGrid();
         CreateQueue();
     }
@@ -379,6 +381,17 @@ public class GridManager : MonoBehaviour
             trailQue.Enqueue(trailTemp);
         }
     }
+    #endregion
+
+    #region End Game Statements
+    public void CheckWin()
+    {
+        doneGoals++;
+        if (doneGoals == gridSystemSO.goals.Length)
+            canvasManager.WinState();
+    }
+
+    
     #endregion
 
 }
