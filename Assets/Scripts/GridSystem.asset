@@ -27,9 +27,7 @@ MonoBehaviour:
   - {r: 1, g: 0.4443817, b: 0, a: 1}
   - {r: 1, g: 0, b: 0.75262356, a: 1}
   isSmootCreateStart: 0
-  trailCount: 30
   gridPrefab: {fileID: 7418028351732258047, guid: 661a4153112f5014e8762970a4b58d10, type: 3}
-  trailPrefab: {fileID: 6769401201668725488, guid: 3b6e54723b65c844dbe16f2304437a07, type: 3}
   numberPrefabs:
   - type: 0
     prefab: {fileID: 50662583194677260, guid: 76bec471036c8df45850347bf4469c1c, type: 3}

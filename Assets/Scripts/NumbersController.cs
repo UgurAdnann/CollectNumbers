@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 
 public class NumbersController : MonoBehaviour
 {
@@ -18,7 +17,7 @@ public class NumbersController : MonoBehaviour
     private GameObject target;
 
     #region Variables for Destroy
-    private bool isBeingCleared = false, isDestroyed;
+    private bool isBeingCleared = false;
     public bool IsBeingCleared
     {
         get { return isBeingCleared; }
@@ -124,12 +123,8 @@ public class NumbersController : MonoBehaviour
     #region Destroy
     public void DestroyEvent()
     {
-        if (!isDestroyed)
-        {
-            isBeingCleared = true;
-            StartCoroutine(WaitDestroyEvent());
-            isDestroyed = true;
-        }
+        isBeingCleared = true;
+        StartCoroutine(WaitDestroyEvent());
     }
 
     private IEnumerator WaitDestroyEvent()
@@ -138,23 +133,11 @@ public class NumbersController : MonoBehaviour
         if (animator != null)
             animator.SetTrigger("Destroy");
         NumbersController newNumber = gridManager.SpawnNewNumber(Column, Row, NumberType.Empty);
-        if (gridManager.isGameStart&&!isDestroyed)
+        if (gridManager.isGameStart)
             SetTargetNumber();
-
         yield return new WaitForSeconds(0.2f);
         Destroy(newNumber.gameObject);
         Destroy(gameObject);
-    }
-
-    private void MoveTrail(GameObject newtarget)
-    {
-        print("Trail");
-        if (gridManager.trailQue.Count <= 0)
-            gridManager.CreateQueue();
-        GameObject newTrail = gridManager.trailQue.Dequeue();
-        newTrail.transform.position = transform.position;
-        newTrail.SetActive(true);
-        newTrail.GetComponent<TrailController>().Movement(newtarget);
     }
     #endregion
 
@@ -177,7 +160,8 @@ public class NumbersController : MonoBehaviour
             target = GameObject.FindGameObjectWithTag(colorName);
             if (target != null)
             {
-                MoveTrail(target);
+                target.GetComponent<GoalController>().SetText(1);
+
             }
         }
     }
