@@ -14,16 +14,15 @@ public class TrailController : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         trailRenderer = GetComponent<TrailRenderer>();
-        
     }
     void Start()
     {
         gridManager = ObjectManager.GridManager;
     }
 
-    public void Movement(GameObject target)
+    public void Movement(GameObject target, NumbersController number)
     {
-        SetColor(target);
+        SetColor(target,number);
         transform.DOMove(Camera.main.ScreenToWorldPoint(target.transform.position), 15).SetEase(Ease.Linear).SetSpeedBased(true).OnStepComplete(() => EndMovement(target));
     }
 
@@ -35,39 +34,10 @@ public class TrailController : MonoBehaviour
         gridManager.trailQue.Enqueue(transform.gameObject);
     }
 
-    private void SetColor(GameObject target)
+    private void SetColor(GameObject target,NumbersController number)
     {
-        if (target.GetComponent<GoalController>().colorType.Equals(ColorType.Red))
-        {
-            spriteRenderer.color = gridSystemSO.colors[1];
-            trailRenderer.startColor = gridSystemSO.colors[1];
-            trailRenderer.endColor = gridSystemSO.colors[1];
-        }
-        if (target.GetComponent<GoalController>().colorType.Equals(ColorType.Green))
-        {
-            spriteRenderer.color = gridSystemSO.colors[2];
-            trailRenderer.startColor = gridSystemSO.colors[2];
-            trailRenderer.endColor = gridSystemSO.colors[2];
-        }
-        if (target.GetComponent<GoalController>().colorType.Equals(ColorType.Blue))
-        {
-            spriteRenderer.color = gridSystemSO.colors[3];
-            trailRenderer.startColor = gridSystemSO.colors[3];
-            trailRenderer.endColor = gridSystemSO.colors[3];
-        }
-        if (target.GetComponent<GoalController>().colorType.Equals(ColorType.Orange))
-        {
-            spriteRenderer.color = gridSystemSO.colors[4];
-            trailRenderer.startColor = gridSystemSO.colors[4];
-            trailRenderer.endColor = gridSystemSO.colors[4];
-        }
-        if (target.GetComponent<GoalController>().colorType.Equals(ColorType.Pink))
-        {
-            spriteRenderer.color = gridSystemSO.colors[5];
-            trailRenderer.startColor = gridSystemSO.colors[5];
-            trailRenderer.endColor = gridSystemSO.colors[5];
-        }
-       
-       
+        spriteRenderer.color = gridSystemSO.colors[number.colorValue];
+        trailRenderer.startColor = gridSystemSO.colors[number.colorValue];
+        trailRenderer.endColor = gridSystemSO.colors[number.colorValue];
     }
 }

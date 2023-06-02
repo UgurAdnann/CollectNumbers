@@ -7,17 +7,26 @@ using UnityEngine.SceneManagement;
 
 public class CanvasManager : MonoBehaviour
 {
+    #region General Values
     public GridSystemSO gridSystemSo;
+    #endregion
+    #region Goals
     public GameObject goalPrefab;
     public Transform goals;
-    private Image goalsBg, moveBg;
-    [HideInInspector] public bool isWin, isGameOver;
-    public GameObject winPanel, moves, failPanel;
-    public GameObject[] confetties;
+    private Image goalsBg;
+    #endregion
+    #region Move
+    private Image moveBg;
+    public GameObject moves;
     private TMPro.TextMeshProUGUI moveText;
     private int moveNum;
     private bool isHasMove = true;
-
+    #endregion
+    #region Win&Fail
+    [HideInInspector] public bool isWin, isGameOver;
+    public GameObject winPanel, failPanel;
+    public GameObject[] confetties;
+    #endregion
 
     private void Awake()
     {
@@ -43,6 +52,7 @@ public class CanvasManager : MonoBehaviour
     {
         float posX = 0, distance = 80;
         int count = 0;
+       
         goalsBg.rectTransform.sizeDelta = new Vector2(gridSystemSo.goals.Length * 100, 100);
         for (int i = 0; i < gridSystemSo.goals.Length; i++)
         {
@@ -52,6 +62,7 @@ public class CanvasManager : MonoBehaviour
             newGoal.GetComponent<GoalController>().colorType = gridSystemSo.goals[i].color;
             newGoal.GetComponent<GoalController>().value = gridSystemSo.goals[i].value;
             newGoal.tag = newGoal.GetComponent<GoalController>().colorType.ToString();
+           
             if (gridSystemSo.goals.Length % 2 == 0)
             {
                 if (i == 0)
@@ -89,10 +100,7 @@ public class CanvasManager : MonoBehaviour
                     else
                         newGoal.transform.localPosition = new Vector3(-posX, 20, 0);
                 }
-
             }
-
-
         }
     }
     #endregion

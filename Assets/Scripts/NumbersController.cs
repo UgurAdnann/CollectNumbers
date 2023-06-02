@@ -167,7 +167,7 @@ public class NumbersController : MonoBehaviour
         GameObject newTrail = gridManager.trailQue.Dequeue();
         newTrail.transform.position = transform.position;
         newTrail.SetActive(true);
-        newTrail.GetComponent<TrailController>().Movement(newtarget);
+        newTrail.GetComponent<TrailController>().Movement(newtarget,this);
     }
 
     private void SetExpFx()

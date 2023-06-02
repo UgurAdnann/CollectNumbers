@@ -18,35 +18,6 @@ public class ExpFxController : MonoBehaviour
         transform.GetChild(0).GetComponent<ParticleSystem>().startColor=gridSystemSO.colors[target.colorValue];
         GetComponent<ParticleSystem>().Play();
         StartCoroutine(WaitDestroy(target));
-
-        //    transform.GetChild(0).GetComponent<ParticleSystem>().startColor = gridSystemSO.colors[1];
-        //if (target.GetComponent<GoalController>().colorType.Equals(ColorType.Red))
-        //{
-        //    GetComponent<ParticleSystem>().startColor = gridSystemSO.colors[1];
-        //    transform.GetChild(0).GetComponent<ParticleSystem>().startColor = gridSystemSO.colors[1];
-        //}
-        //if (target.GetComponent<GoalController>().colorType.Equals(ColorType.Green))
-        //{
-        //    GetComponent<ParticleSystem>().startColor = gridSystemSO.colors[2];
-        //    transform.GetChild(0).GetComponent<ParticleSystem>().startColor = gridSystemSO.colors[2];
-        //}
-        //if (target.GetComponent<GoalController>().colorType.Equals(ColorType.Blue))
-        //{
-        //    GetComponent<ParticleSystem>().startColor = gridSystemSO.colors[3];
-        //    transform.GetChild(0).GetComponent<ParticleSystem>().startColor = gridSystemSO.colors[3];
-        //}
-        //if (target.GetComponent<GoalController>().colorType.Equals(ColorType.Orange))
-        //{
-        //    GetComponent<ParticleSystem>().startColor = gridSystemSO.colors[4];
-        //    transform.GetChild(0).GetComponent<ParticleSystem>().startColor = gridSystemSO.colors[4];
-        //}
-        //if (target.GetComponent<GoalController>().colorType.Equals(ColorType.Pink))
-        //{
-        //    GetComponent<ParticleSystem>().startColor = gridSystemSO.colors[5];
-        //    transform.GetChild(0).GetComponent<ParticleSystem>().startColor = gridSystemSO.colors[5];
-        //}
-
-
     }
 
     IEnumerator WaitDestroy(NumbersController target)
