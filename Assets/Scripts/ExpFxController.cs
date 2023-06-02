@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class ExpFxController : MonoBehaviour
 {
+    #region Variables for General
     public GridSystemSO gridSystemSO;
     private GridManager gridManager;
- 
+    #endregion
+
     void Start()
     {
         gridManager = ObjectManager.GridManager;
     }
 
+    [System.Obsolete]
     public void SetColor(NumbersController target)
     {
         GetComponent<ParticleSystem>().startColor = gridSystemSO.colors[target.colorValue];

@@ -7,22 +7,22 @@ using UnityEngine.SceneManagement;
 
 public class CanvasManager : MonoBehaviour
 {
-    #region General Values
+    #region Variables for General
     public GridSystemSO gridSystemSo;
     #endregion
-    #region Goals
+    #region Variables for Goals
     public GameObject goalPrefab;
     public Transform goals;
     private Image goalsBg;
     #endregion
-    #region Move
+    #region Variables for Move
     private Image moveBg;
     public GameObject moves;
     private TMPro.TextMeshProUGUI moveText;
     private int moveNum;
     private bool isHasMove = true;
     #endregion
-    #region Win&Fail
+    #region Variables for Win&Fail
     [HideInInspector] public bool isWin, isGameOver;
     public GameObject winPanel, failPanel;
     public GameObject[] confetties;
