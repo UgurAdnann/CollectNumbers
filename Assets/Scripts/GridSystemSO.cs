@@ -35,9 +35,9 @@ public class GridSystemSO : ScriptableObject
     public float gridScale;
     public Color[] colors;
     public bool isSmootCreateStart;
-    public int trailCount;
+    public int trailCount, MaxMove,expFxCount;
 
-    public GameObject gridPrefab, trailPrefab;
+    public GameObject gridPrefab, trailPrefab, expFxPrefab;
     public Dictionary<NumberType, GameObject> numberPrefabDict;
     public NumberPrefab[] numberPrefabs;
     public NumbersController[,] numbers;

@@ -12,6 +12,9 @@ TagManager:
   - Missile
   - Trails
   - WinPanel
+  - Moves
+  - FailPanel
+  - ExpParticles
   layers:
   - Default
   - TransparentFX

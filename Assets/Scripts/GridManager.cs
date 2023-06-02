@@ -13,7 +13,8 @@ public class GridManager : MonoBehaviour
     public int matchedCount, matchedColor;
     public List<GameObject> destroyedList = new List<GameObject>();
     public Queue<GameObject> trailQue = new Queue<GameObject>();
-    private GameObject trails;
+    public Queue<GameObject> expFxQue = new Queue<GameObject>();
+    private GameObject trails,expParticles;
     [HideInInspector] public int doneGoals;
 
     private void Awake()
@@ -26,6 +27,7 @@ public class GridManager : MonoBehaviour
         canvasManager = ObjectManager.CanvasManager;
         CreateGrid();
         CreateQueue();
+        CreateFxQueue();
     }
 
     #region Create Grid
@@ -67,11 +69,11 @@ public class GridManager : MonoBehaviour
                     GameObject newNumber = Instantiate(gridSystemSO.numberPrefabDict[NumberType.Normal], Vector3.zero, Quaternion.identity);
                     newNumber.name = "Number(" + i + "," + j + ")";
                     newNumber.transform.SetParent(transform);
-                    newNumber.transform.localScale = Vector3.one * gridSystemSO.gridScale;
                     CloseNumbers(newNumber);
                     gridSystemSO.numbers[i, j] = newNumber.GetComponent<NumbersController>();
                     gridSystemSO.numbers[i, j].transform.position = gridSystemSO.grids[i, j].transform.position;
                     gridSystemSO.numbers[i, j].Init(i, j, this, NumberType.Normal);
+                    gridSystemSO.numbers[i, j].transform.localScale = Vector3.one * gridSystemSO.gridScale;
                 }
 
 
@@ -91,10 +93,10 @@ public class GridManager : MonoBehaviour
     {
         GameObject newNumber = Instantiate(gridSystemSO.numberPrefabDict[type], GetWorldPosition(column, row), Quaternion.identity);
         newNumber.transform.SetParent(transform);
-
         gridSystemSO.numbers[column, row] = newNumber.GetComponent<NumbersController>();
         gridSystemSO.numbers[column, row].Init(column, row, this, type);
         gridSystemSO.numbers[column, row].numberType = type;
+        gridSystemSO.numbers[column, row].transform.localScale = Vector3.one * gridSystemSO.gridScale;
         if (!gridSystemSO.isSmootCreateStart && !isGameStart)
             CloseNumbers(newNumber);
         return gridSystemSO.numbers[column, row];
@@ -383,6 +385,20 @@ public class GridManager : MonoBehaviour
     }
     #endregion
 
+    #region ExpFx
+    public void CreateFxQueue()
+    {
+        expParticles = GameObject.FindGameObjectWithTag("ExpParticles");
+        for (int i = 0; i < gridSystemSO.trailCount; i++)
+        {
+            GameObject expFxTemp = Instantiate(gridSystemSO.expFxPrefab);
+            expFxTemp.transform.SetParent(expParticles.transform);
+            expFxTemp.transform.localPosition = Vector3.zero;
+            expFxQue.Enqueue(expFxTemp);
+        }
+    }
+    #endregion
+
     #region End Game Statements
     public void CheckWin()
     {
@@ -391,7 +407,7 @@ public class GridManager : MonoBehaviour
             canvasManager.WinState();
     }
 
-    
+
     #endregion
 
 }

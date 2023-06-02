@@ -11,11 +11,12 @@ public class NumbersController : MonoBehaviour
     public int numberValue, colorValue;
     private string colorName;
     TMPro.TextMeshPro numberText;
-    public NumberType numberType;
+    [HideInInspector] public NumberType numberType;
     private Animator animator;
     public bool isEntryNumber;
     private int column, row;
     private GameObject target;
+    private Vector3 startScale;
 
     #region Variables for Destroy
     private bool isBeingCleared = false, isDestroyed;
@@ -62,19 +63,26 @@ public class NumbersController : MonoBehaviour
         animator = GetComponent<Animator>();
         numberText = transform.GetChild(0).GetComponent<TMPro.TextMeshPro>();
         SetColor();
+        transform.localScale = Vector3.one * gridSystemSO.gridScale;
     }
 
     #region Input System
     private void OnMouseDown()
     {
-        if(!canvasManager.isGameOver)
-        print("Anim");
+        if (!canvasManager.isGameOver)
+        {
+            DOTween.Complete(21);
+            transform.DOScale(Vector3.one * gridSystemSO.gridScale * 0.5f, 0.1f).SetEase(Ease.Linear).SetId(20);
+        }
     }
 
     private void OnMouseUp()
     {
-        if (numberValue != gridSystemSO.maxNumber&&!isDestroyed&&!canvasManager.isGameOver)
+        DOTween.Complete(20);
+        transform.DOScale(Vector3.one * gridSystemSO.gridScale, 0.1f).SetEase(Ease.Linear).SetId(21);
+        if (numberValue != gridSystemSO.maxNumber && !isDestroyed && !canvasManager.isGameOver)
         {
+            canvasManager.SetMoveCount(1);
             numberValue++;
             SetColor();
             gridManager.DestroyMathed(this, Column, Row);
@@ -137,10 +145,15 @@ public class NumbersController : MonoBehaviour
     {
 
         if (animator != null)
-            animator.SetTrigger("Destroy");
+        {
+            animator.enabled = true;
+             animator.SetTrigger("Destroy");
+        }
         NumbersController newNumber = gridManager.SpawnNewNumber(Column, Row, NumberType.Empty);
-        if (gridManager.isGameStart&&!isDestroyed)
+        if (gridManager.isGameStart && !isDestroyed)
+        {
             SetTargetNumber();
+        }
 
         yield return new WaitForSeconds(0.2f);
         Destroy(newNumber.gameObject);
@@ -155,6 +168,16 @@ public class NumbersController : MonoBehaviour
         newTrail.transform.position = transform.position;
         newTrail.SetActive(true);
         newTrail.GetComponent<TrailController>().Movement(newtarget);
+    }
+
+    private void SetExpFx()
+    {
+        if(gridManager.expFxQue.Count <= 0)
+            gridManager.CreateFxQueue();
+        GameObject newFx = gridManager.expFxQue.Dequeue();
+        newFx.transform.position = transform.position;
+        newFx.SetActive(true);
+        newFx.GetComponent<ExpFxController>().SetColor(this);
     }
     #endregion
 
@@ -172,9 +195,10 @@ public class NumbersController : MonoBehaviour
 
     private void SetTargetNumber()
     {
-        if (Type.Equals(NumberType.Normal)&&colorName!=null)
+        if (Type.Equals(NumberType.Normal) && colorName != null)
         {
             target = GameObject.FindGameObjectWithTag(colorName);
+            SetExpFx();
             if (target != null)
             {
                 MoveTrail(target);

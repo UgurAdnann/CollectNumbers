@@ -18,18 +18,21 @@ MonoBehaviour:
   useableMaxNumber: 4
   matchNumber: 3
   fillTime: 0.1
-  gridScale: 1
+  gridScale: 0.75
   colors:
   - {r: 0, g: 0, b: 0, a: 0}
   - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0.0021022558, g: 1, b: 0, a: 1}
+  - {r: 0.19171607, g: 0.6415094, b: 0.0145247225, a: 1}
   - {r: 0.00083065033, g: 0, b: 1, a: 1}
   - {r: 1, g: 0.4443817, b: 0, a: 1}
   - {r: 1, g: 0, b: 0.75262356, a: 1}
   isSmootCreateStart: 0
   trailCount: 30
+  MaxMove: 21
+  expFxCount: 30
   gridPrefab: {fileID: 7418028351732258047, guid: 661a4153112f5014e8762970a4b58d10, type: 3}
   trailPrefab: {fileID: 6769401201668725488, guid: 3b6e54723b65c844dbe16f2304437a07, type: 3}
+  expFxPrefab: {fileID: 154262611373657696, guid: 5e939202f8c66cc4683305b979a9b7e2, type: 3}
   numberPrefabs:
   - type: 0
     prefab: {fileID: 50662583194677260, guid: 76bec471036c8df45850347bf4469c1c, type: 3}
@@ -40,15 +43,6 @@ MonoBehaviour:
   entryNumbers:
   - value: 1
     row: 0
-    column: 0
-  - value: 2
-    row: 1
-    column: 0
-  - value: 3
-    row: 2
-    column: 0
-  - value: 6
-    row: 3
     column: 0
   goals:
   - color: 0

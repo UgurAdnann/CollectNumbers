@@ -10,10 +10,13 @@ public class CanvasManager : MonoBehaviour
     public GridSystemSO gridSystemSo;
     public GameObject goalPrefab;
     public Transform goals;
-    private Image goalsBg;
+    private Image goalsBg, moveBg;
     [HideInInspector] public bool isWin, isGameOver;
-    public GameObject winPanel;
+    public GameObject winPanel, moves, failPanel;
     public GameObject[] confetties;
+    private TMPro.TextMeshProUGUI moveText;
+    private int moveNum;
+    private bool isHasMove = true;
 
 
     private void Awake()
@@ -24,7 +27,15 @@ public class CanvasManager : MonoBehaviour
     {
         goalsBg = goals.GetChild(0).GetComponent<Image>();
         SetGoals();
+
+        moveNum = gridSystemSo.MaxMove;
+        moves = GameObject.FindGameObjectWithTag("Moves");
+        moveBg = moves.transform.GetChild(0).GetComponent<Image>();
+        moveText = moves.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>();
+        SetMoveCount(0);
+
         winPanel = GameObject.FindGameObjectWithTag("WinPanel");
+        failPanel = GameObject.FindGameObjectWithTag("FailPanel");
     }
 
     #region Goals Setting
@@ -86,6 +97,20 @@ public class CanvasManager : MonoBehaviour
     }
     #endregion
 
+    #region MovesSetting
+    public void SetMoveCount(int value)
+    {
+        moveNum -= value;
+        moveText.text = moveNum.ToString();
+        if (moveNum <= 0 && !isWin && isHasMove)
+        {
+            isHasMove = false;
+            isGameOver = true;
+            StartCoroutine(WaitForFailState());
+        }
+    }
+    #endregion
+
     #region Win&Fail Statement
     public void WinState()
     {
@@ -96,7 +121,6 @@ public class CanvasManager : MonoBehaviour
     {
         isWin = true;
         isGameOver = true;
-        print("Confetti");
         for (int i = 0; i < confetties.Length; i++)
         {
             confetties[i].SetActive(true);
@@ -107,9 +131,20 @@ public class CanvasManager : MonoBehaviour
         winPanel.transform.DOScale(Vector3.one, 1);
     }
 
+    IEnumerator WaitForFailState()
+    {
+        yield return new WaitForSeconds(2);
+        if (!isWin)
+        {
+            failPanel.SetActive(true);
+            failPanel.transform.DOScale(Vector3.one, 1);
+        }
+    }
+
     public void ReloadScene()
     {
         DOTween.CompleteAll();
+        DOTween.Clear();
         StopAllCoroutines();
         SceneManager.LoadScene(0);
     }

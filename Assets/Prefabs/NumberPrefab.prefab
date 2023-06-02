@@ -278,6 +278,7 @@ MonoBehaviour:
   numberValue: 0
   colorValue: 0
   numberType: 0
+  isEntryNumber: 0
 --- !u!114 &7009641364161261449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,6 +291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc10a7e960173c144a2200a23a5d63da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridSystemSO: {fileID: 0}
 --- !u!61 &2334569672130672489
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -324,7 +326,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7445203541849158916}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 8dee7730b511c2a4fbf6adfe10b364aa, type: 2}
   m_CullingMode: 0
