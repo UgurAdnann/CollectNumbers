@@ -5,12 +5,16 @@ using UnityEngine.UI;
 
 public class GoalController : MonoBehaviour
 {
+    #region Variables for General
     public GridSystemSO gridSystemSO;
     private GridManager gridManager;
+    #endregion
+    #region Variables for Color and Text
     public ColorType colorType;
     public int value;
     private TMPro.TextMeshProUGUI valueText;
     private bool isDone;
+    #endregion
 
     void Start()
     {
@@ -18,11 +22,6 @@ public class GoalController : MonoBehaviour
         valueText = transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>();
         SetColorValue();
         SetText(0);
-    }
-
-    void Update()
-    {
-        
     }
 
     private void SetColorValue()
@@ -54,6 +53,5 @@ public class GoalController : MonoBehaviour
             transform.GetChild(1).gameObject.SetActive(true);
         }
         valueText.text = value.ToString();
-           
     }
 }
