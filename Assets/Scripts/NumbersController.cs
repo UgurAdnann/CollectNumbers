@@ -5,18 +5,14 @@ using DG.Tweening;
 
 public class NumbersController : MonoBehaviour
 {
+    #region Variables for General
     public GridSystemSO gridSystemSO;
     private CanvasManager canvasManager;
     public MovementManager movementManager;
-    public int numberValue, colorValue;
-    private string colorName;
-    TMPro.TextMeshPro numberText;
-    [HideInInspector] public NumberType numberType;
+    
     private Animator animator;
-    public bool isEntryNumber;
-    private int column, row;
     private GameObject target;
-    private Vector3 startScale;
+    #endregion
 
     #region Variables for Destroy
     private bool isBeingCleared = false, isDestroyed;
@@ -26,6 +22,14 @@ public class NumbersController : MonoBehaviour
     }
     #endregion
 
+    #region Variables for Custimization
+    public int numberValue, colorValue;
+    private string colorName;
+    TMPro.TextMeshPro numberText;
+    [HideInInspector] public NumberType numberType;
+    public bool isEntryNumber;
+    
+    private int column, row;
     public int Column
     {
         get { return column; }
@@ -51,6 +55,7 @@ public class NumbersController : MonoBehaviour
     {
         get { return gridManager; }
     }
+    #endregion
 
     private void Awake()
     {
@@ -205,5 +210,4 @@ public class NumbersController : MonoBehaviour
             }
         }
     }
-
 }

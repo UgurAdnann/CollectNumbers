@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d56c0898e3917694db64dd937f363e4b, type: 3}
   m_Name: GridSystem
   m_EditorClassIdentifier: 
-  row: 7
-  column: 7
+  row: 6
+  column: 5
   maxNumber: 5
   useableMaxNumber: 4
   matchNumber: 3
@@ -53,5 +53,3 @@ MonoBehaviour:
     value: 11
   - color: 3
     value: 14
-  - color: 4
-    value: 7

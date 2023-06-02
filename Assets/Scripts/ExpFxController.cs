@@ -20,10 +20,10 @@ public class ExpFxController : MonoBehaviour
         GetComponent<ParticleSystem>().startColor = gridSystemSO.colors[target.colorValue];
         transform.GetChild(0).GetComponent<ParticleSystem>().startColor=gridSystemSO.colors[target.colorValue];
         GetComponent<ParticleSystem>().Play();
-        StartCoroutine(WaitDestroy(target));
+        StartCoroutine(WaitDestroy());
     }
 
-    IEnumerator WaitDestroy(NumbersController target)
+    IEnumerator WaitDestroy()
     {
         yield return new WaitForSeconds(1);
         gameObject.SetActive(false);

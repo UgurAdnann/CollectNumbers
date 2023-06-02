@@ -5,16 +5,19 @@ using DG.Tweening;
 
 public class TrailController : MonoBehaviour
 {
+    #region Variables for General
     GridManager gridManager;
-  public  GridSystemSO gridSystemSO;
+    public GridSystemSO gridSystemSO;
     private SpriteRenderer spriteRenderer;
     private TrailRenderer trailRenderer;
+    #endregion
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         trailRenderer = GetComponent<TrailRenderer>();
     }
+
     void Start()
     {
         gridManager = ObjectManager.GridManager;
@@ -22,7 +25,7 @@ public class TrailController : MonoBehaviour
 
     public void Movement(GameObject target, NumbersController number)
     {
-        SetColor(target,number);
+        SetColor(number);
         transform.DOMove(Camera.main.ScreenToWorldPoint(target.transform.position), 15).SetEase(Ease.Linear).SetSpeedBased(true).OnStepComplete(() => EndMovement(target));
     }
 
@@ -34,7 +37,7 @@ public class TrailController : MonoBehaviour
         gridManager.trailQue.Enqueue(transform.gameObject);
     }
 
-    private void SetColor(GameObject target,NumbersController number)
+    private void SetColor(NumbersController number)
     {
         spriteRenderer.color = gridSystemSO.colors[number.colorValue];
         trailRenderer.startColor = gridSystemSO.colors[number.colorValue];

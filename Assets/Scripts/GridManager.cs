@@ -4,18 +4,24 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    public Transform matchedObjects;
+    #region Variables for General
+    private CanvasManager canvasManager; 
+    public GridSystemSO gridSystemSO;
     public bool isGameStart;
-    #region Create Grid
-    private CanvasManager canvasManager; //------------
-    public GridSystemSO gridSystemSO;//-------------
+    [HideInInspector] public int doneGoals;
     #endregion
+
+    #region Variables for Grids and Numbers
+    public Transform matchedObjects;
     public int matchedCount, matchedColor;
     public List<GameObject> destroyedList = new List<GameObject>();
+    #endregion
+
+    #region Variables for Trails and exp
     public Queue<GameObject> trailQue = new Queue<GameObject>();
     public Queue<GameObject> expFxQue = new Queue<GameObject>();
     private GameObject trails,expParticles;
-    [HideInInspector] public int doneGoals;
+    #endregion
 
     private void Awake()
     {
@@ -55,7 +61,6 @@ public class GridManager : MonoBehaviour
             }
         }
 
-
         //Create Numbers
         gridSystemSO.numbers = new NumbersController[gridSystemSO.column, gridSystemSO.row];
         for (int i = 0; i < gridSystemSO.column; i++)
@@ -75,9 +80,6 @@ public class GridManager : MonoBehaviour
                     gridSystemSO.numbers[i, j].Init(i, j, this, NumberType.Normal);
                     gridSystemSO.numbers[i, j].transform.localScale = Vector3.one * gridSystemSO.gridScale;
                 }
-
-
-                //gridSystemSO.numbers[i, j].GetComponent<MovementManager>().Movement(i, j);
             }
         }
         StartCoroutine(Fill());
@@ -406,8 +408,5 @@ public class GridManager : MonoBehaviour
         if (doneGoals == gridSystemSO.goals.Length)
             canvasManager.WinState();
     }
-
-
     #endregion
-
 }

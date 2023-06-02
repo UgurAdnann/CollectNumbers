@@ -9,6 +9,7 @@ public class GoalController : MonoBehaviour
     public GridSystemSO gridSystemSO;
     private GridManager gridManager;
     #endregion
+
     #region Variables for Color and Text
     public ColorType colorType;
     public int value;

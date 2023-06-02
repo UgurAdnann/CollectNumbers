@@ -4,22 +4,15 @@ using UnityEngine;
 
 public class MovementManager : MonoBehaviour
 {
+    #region variables for General
     public GridSystemSO gridSystemSO;
     private NumbersController numberController;
     private IEnumerator moveCoroutine;
+    #endregion
 
     private void Awake()
     {
         numberController = GetComponent<NumbersController>();
-    }
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void Movement(int newColumn, int newRow, float time)
@@ -28,20 +21,15 @@ public class MovementManager : MonoBehaviour
         {
             StopCoroutine(moveCoroutine);
         }
-            moveCoroutine = MoveCoroutine(newColumn, newRow, time);
-            StartCoroutine(moveCoroutine);
+        moveCoroutine = MoveCoroutine(newColumn, newRow, time);
+        StartCoroutine(moveCoroutine);
 
-            numberController.Column = newColumn;
-            numberController.Row = newRow;
+        numberController.Column = newColumn;
+        numberController.Row = newRow;
 
-            Vector3 startPos = transform.position;
-            Vector3 endPos = numberController.GridRef.GetWorldPosition(newColumn, newRow);
+        Vector3 endPos = numberController.GridRef.GetWorldPosition(newColumn, newRow);
 
-            numberController.transform.position = endPos; 
-
-        //numberController.Column = newColumn;
-        //numberController.Row = newRow;
-        //numberController.transform.localPosition = numberController.GridRef.GetWorldPosition(newColumn, newRow);
+        numberController.transform.position = endPos;
     }
 
     private IEnumerator MoveCoroutine(int newColumn, int newRow, float time)

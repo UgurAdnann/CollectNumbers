@@ -10,18 +10,20 @@ public class CanvasManager : MonoBehaviour
     #region Variables for General
     public GridSystemSO gridSystemSo;
     #endregion
+
     #region Variables for Goals
     public GameObject goalPrefab;
     public Transform goals;
     private Image goalsBg;
     #endregion
+
     #region Variables for Move
-    private Image moveBg;
     public GameObject moves;
     private TMPro.TextMeshProUGUI moveText;
     private int moveNum;
     private bool isHasMove = true;
     #endregion
+
     #region Variables for Win&Fail
     [HideInInspector] public bool isWin, isGameOver;
     public GameObject winPanel, failPanel;
@@ -32,6 +34,7 @@ public class CanvasManager : MonoBehaviour
     {
         ObjectManager.CanvasManager = this;
     }
+
     void Start()
     {
         goalsBg = goals.GetChild(0).GetComponent<Image>();
@@ -39,21 +42,17 @@ public class CanvasManager : MonoBehaviour
 
         moveNum = gridSystemSo.MaxMove;
         moves = GameObject.FindGameObjectWithTag("Moves");
-        moveBg = moves.transform.GetChild(0).GetComponent<Image>();
         moveText = moves.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>();
         SetMoveCount(0);
-
-        winPanel = GameObject.FindGameObjectWithTag("WinPanel");
-        failPanel = GameObject.FindGameObjectWithTag("FailPanel");
     }
 
     #region Goals Setting
     private void SetGoals()
     {
-        float posX = 0, distance = 80;
+        float posX = 0, distance = 120;
         int count = 0;
        
-        goalsBg.rectTransform.sizeDelta = new Vector2(gridSystemSo.goals.Length * 100, 100);
+        goalsBg.rectTransform.sizeDelta = new Vector2(gridSystemSo.goals.Length *Screen.width/8 , 200);
         for (int i = 0; i < gridSystemSo.goals.Length; i++)
         {
             GameObject newGoal = Instantiate(goalPrefab);
@@ -69,7 +68,6 @@ public class CanvasManager : MonoBehaviour
                 {
                     count++;
                     posX = count * distance * 0.5f;
-                    print(posX);
                     newGoal.transform.localPosition = new Vector3(posX, 20, 0);
                 }
                 else if (i == 1)
