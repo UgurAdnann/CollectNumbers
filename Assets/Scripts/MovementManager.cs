@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class MovementManager : MonoBehaviour
 {
@@ -17,17 +18,17 @@ public class MovementManager : MonoBehaviour
 
     public void Movement(int newColumn, int newRow, float time)
     {
-        if (moveCoroutine != null)
-        {
-            StopCoroutine(moveCoroutine);
-        }
-        moveCoroutine = MoveCoroutine(newColumn, newRow, time);
-        StartCoroutine(moveCoroutine);
-
+        //if (moveCoroutine != null)
+        //{
+            //StopCoroutine(moveCoroutine);
+        //}
+        //moveCoroutine = MoveCoroutine(newColumn, newRow, time);
+        //StartCoroutine(moveCoroutine);
         numberController.Column = newColumn;
         numberController.Row = newRow;
 
         Vector3 endPos = numberController.GridRef.GetWorldPosition(newColumn, newRow);
+        transform.DOMove(endPos, 0.2f).SetEase(Ease.Linear);
 
         numberController.transform.position = endPos;
     }
