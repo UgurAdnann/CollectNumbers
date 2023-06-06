@@ -28,7 +28,7 @@ public class MovementManager : MonoBehaviour
         numberController.Row = newRow;
 
         Vector3 endPos = numberController.GridRef.GetWorldPosition(newColumn, newRow);
-        transform.DOMove(endPos, 0.2f).SetEase(Ease.Linear);
+        transform.DOMove(endPos, 0.2f).SetEase(Ease.Linear); //---------------
 
         numberController.transform.position = endPos;
     }
