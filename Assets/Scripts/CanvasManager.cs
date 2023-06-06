@@ -49,10 +49,10 @@ public class CanvasManager : MonoBehaviour
     #region Goals Setting
     private void SetGoals()
     {
-        float posX = 0, distance = 120;
+        float posX = 0,posY=10, distance = 120;
         int count = 0;
        
-        goalsBg.rectTransform.sizeDelta = new Vector2(gridSystemSo.goals.Length *Screen.width/8 , 200);
+        goalsBg.rectTransform.sizeDelta = new Vector2(gridSystemSo.goals.Length *Screen.width/8 , 100);
         for (int i = 0; i < gridSystemSo.goals.Length; i++)
         {
             GameObject newGoal = Instantiate(goalPrefab);
@@ -68,35 +68,35 @@ public class CanvasManager : MonoBehaviour
                 {
                     count++;
                     posX = count * distance * 0.5f;
-                    newGoal.transform.localPosition = new Vector3(posX, 20, 0);
+                    newGoal.transform.localPosition = new Vector3(posX, posY, 0);
                 }
                 else if (i == 1)
                 {
-                    newGoal.transform.localPosition = new Vector3(-posX, 20, 0);
+                    newGoal.transform.localPosition = new Vector3(-posX, posY, 0);
                 }
                 else if (i % 2 == 0)
                 {
                     count++;
                     posX = (count * distance) - (distance * 0.5f);
-                    newGoal.transform.localPosition = new Vector3(posX, 20, 0);
+                    newGoal.transform.localPosition = new Vector3(posX, posY, 0);
                 }
                 else
-                    newGoal.transform.localPosition = new Vector3(-posX, 20, 0);
+                    newGoal.transform.localPosition = new Vector3(-posX, posY, 0);
             }
             else
             {
                 if (i == 0)
-                    newGoal.transform.localPosition = new Vector3(0, 20, 0);
+                    newGoal.transform.localPosition = new Vector3(0, posY, 0);
                 else
                 {
                     if (i % 2 != 0)
                     {
                         count++;
                         posX = count * distance;
-                        newGoal.transform.localPosition = new Vector3(posX, 20, 0);
+                        newGoal.transform.localPosition = new Vector3(posX, posY, 0);
                     }
                     else
-                        newGoal.transform.localPosition = new Vector3(-posX, 20, 0);
+                        newGoal.transform.localPosition = new Vector3(-posX, posY, 0);
                 }
             }
         }
