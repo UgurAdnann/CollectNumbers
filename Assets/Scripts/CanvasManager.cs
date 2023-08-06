@@ -49,10 +49,10 @@ public class CanvasManager : MonoBehaviour
     #region Goals Setting
     private void SetGoals()
     {
-        float posX = 0,posY=10, distance = 120;
+        float posX = 0,posY=0, distance =( (float)Screen.width / (float)Screen.height)*150;
         int count = 0;
-       
-        goalsBg.rectTransform.sizeDelta = new Vector2(gridSystemSo.goals.Length *Screen.width/8 , 100);
+
+        goalsBg.rectTransform.sizeDelta = new Vector2(gridSystemSo.goals.Length * ((float)Screen.width / (float)Screen.height) * 120, 5);
         for (int i = 0; i < gridSystemSo.goals.Length; i++)
         {
             GameObject newGoal = Instantiate(goalPrefab);
@@ -61,7 +61,9 @@ public class CanvasManager : MonoBehaviour
             newGoal.GetComponent<GoalController>().colorType = gridSystemSo.goals[i].color;
             newGoal.GetComponent<GoalController>().value = gridSystemSo.goals[i].value;
             newGoal.tag = newGoal.GetComponent<GoalController>().colorType.ToString();
-           
+            newGoal.transform.localScale = Vector2.one* ((float)Screen.width/(float)Screen.height)*1.5f;
+            
+
             if (gridSystemSo.goals.Length % 2 == 0)
             {
                 if (i == 0)

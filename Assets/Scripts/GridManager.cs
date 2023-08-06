@@ -215,7 +215,6 @@ public class GridManager : MonoBehaviour
         return movedPiece;
     }
 
-
     public bool ClearAllValidMatches()
     {
         bool isNeedsRefill = false;
@@ -241,6 +240,7 @@ public class GridManager : MonoBehaviour
         }
         return isNeedsRefill;
     }
+
     public bool ClearPiece(int column, int row)
     {
         if (!gridSystemSO.numbers[column, row].IsBeingCleared)
