@@ -1281,7 +1281,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pollingTime: 1
-  limit: 60
+  limit: 30
 --- !u!1 &1027391129
 GameObject:
   m_ObjectHideFlags: 0
